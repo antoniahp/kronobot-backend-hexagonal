@@ -14,6 +14,7 @@ class EventCreator:
                      end_date: Optional[datetime] = None,
                      picture: Optional[str] = None,
                      description: Optional[str] = None,
+                     provider_data: Optional[dict] = None
                      ) -> Event:
 
         return Event(
@@ -24,5 +25,6 @@ class EventCreator:
             provider_name=provider_name,
             end_date=end_date,
             picture=picture,
-            description=description
+            description=description,
+            provider_data=provider_data
         )

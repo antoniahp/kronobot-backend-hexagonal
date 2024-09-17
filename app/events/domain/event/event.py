@@ -18,7 +18,7 @@ class Event(models.Model):
     description = RichTextField(blank=True, null=True)
     category = models.CharField(max_length=16,choices=EventCategoryChoices.choices,)
     provider_name = models.CharField( max_length=16, choices=EventProviderChoices.choices, default=EventProviderChoices.KRONOBOT)
-    #provider_data = models.JSONField(default=dict, blank=True)
+    provider_data = models.JSONField(default=dict, blank=True)
 
     def is_live(self):
         return self.start_date <= date.today() <= self.end_date
