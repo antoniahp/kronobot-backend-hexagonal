@@ -27,7 +27,8 @@ class ImportKronoliveEventsCommandHandler(CommandHandler):
                     category=event["category"],
                     description=None,
                     picture=None,
-                    provider_name=EventProviderChoices.KRONOLIVE.value
+                    provider_name=EventProviderChoices.KRONOLIVE.value,
+                    provider_data=event["provider_data"]
                 )
 
                 self.__event_repository.save_event(created_event)
