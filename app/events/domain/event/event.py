@@ -15,7 +15,7 @@ class Event(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(null=True)
     picture = models.ImageField(upload_to="events", blank=True, null=True)
-    description = RichTextField(blank=True)
+    description = RichTextField(blank=True, null=True)
     category = models.CharField(max_length=16,choices=EventCategoryChoices.choices,)
     provider_name = models.CharField( max_length=16, choices=EventProviderChoices.choices, default=EventProviderChoices.KRONOBOT)
     #provider_data = models.JSONField(default=dict, blank=True)
