@@ -1,4 +1,5 @@
 from typing import List, Dict
+import re
 import requests
 from bs4 import BeautifulSoup
 from pip._vendor.rich import table
@@ -33,9 +34,12 @@ class KronoliveSectionTimeImporter(SectionTimeImporter):
                 continue
 
             total = total_soup.text.strip()
+            # Usa una expresión regular para extraer la parte que necesitas
+            match = re.match(r"^(\d{2}:\d{2}\.\d{1,2})", total)
+            if match:
+                total = match.group(1)
+                total_list.append({
+                        "total": total,
 
-            total_list.append({
-                "total": total,
-
-            })
+                    })
         return total_list

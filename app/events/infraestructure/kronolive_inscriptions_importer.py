@@ -9,7 +9,7 @@ from events.domain.inscription.inscriptions_importer import InscriptionsImporter
 
 class KronoliveInscriptionsImporter(InscriptionsImporter):
     def import_inscriptions(self, event:Event) -> List[Dict]:
-        #event_external_id = event.event_external_id
+        event_external_id = event.event_external_id
         #url = f"https://www.kronolive.es/es/ListaDeInscritos/{event_external_id}/a"
         #response = requests.get(url)
         response = requests.get(event.provider_data["inscribed_url"])
