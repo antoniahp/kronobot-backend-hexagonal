@@ -8,6 +8,5 @@ class DbCompetitorRepository(CompetitorRepository):
         competitor = Competitor.objects.filter(name=name).first()
         return competitor
 
-
     def save_competitor(self, competitor:Competitor) -> None:
         competitor.save()
