@@ -1,16 +1,14 @@
 from typing import List, Dict
 import requests
 from bs4 import BeautifulSoup
-from pip._vendor.rich import table
 
 from events.domain.event.event import Event
 from events.domain.section.section_importer import SectionImporter
-from events.domain.section_time.section_time_importer import SectionTimeImporter
 
 
 class KronoliveSectionImporter(SectionImporter):
     def section_importer(self, event: Event) -> List[Dict]:
-        url = "https://www.kronolive.es/es/Tiempos/1230/rallysprint-ses-salines2024"
+        url = "https://www.kronolive.es/es/TiemposOnline/1231/a"
         response = requests.get(url)
         #response = requests.get(event.provider_data["times_url"])
         soup = BeautifulSoup(response.text)

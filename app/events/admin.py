@@ -45,7 +45,9 @@ class SectionAdmin(admin.ModelAdmin):
 
 class SectionTimeAdmin(admin.ModelAdmin):
     list_display = [
+        "get_event_name",
         "get_section_name",
+        "get_pilot_name",
         "section_time"
     ]
 
@@ -53,6 +55,16 @@ class SectionTimeAdmin(admin.ModelAdmin):
         return obj.section.name
 
     get_section_name.admin_order_field = 'section'
+
+    def get_pilot_name(self, obj):
+        return obj.inscription.pilot.name
+
+    get_pilot_name.admin_order_field = 'pilot_name'
+
+    def get_event_name(self, obj):
+        return obj.section.event.name
+
+    get_pilot_name.admin_order_field = 'pilot_name'
 
 admin.site.register(Event, EventAdmin)
 admin.site.register(Competitor, CompetitorAdmin)

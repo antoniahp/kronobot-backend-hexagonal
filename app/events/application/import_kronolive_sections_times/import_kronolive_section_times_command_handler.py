@@ -28,14 +28,28 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
         events = self.__event_repository.filter_event()
         for event in events:
             sections = self.__section_repository.filter_section()
+            inscriptions = self.__inscription_repository.filter_inscriptions(event_id=event.id)
+            if len(inscriptions) == 0:
+                continue
+
+            dorsal_inscription_mapper = {}
+            for inscription in inscriptions:
+                dorsal_inscription_mapper[inscription.dorsal] = inscription
+
+
+            section_code_section_mapper = {}
             for section in sections:
-                inscriptions = self.__inscription_repository.filter_inscriptions(event_id=event.id)
-                for inscription in inscriptions:
-                    section_times = self.__section_times_importer.section_time_importer(section=section)
-                    for time in section_times:
-                        created_sections_times = self.__section_times_creator.section_time_creator(
-                            section_id=section.id,
-                            inscription=inscription.id,
-                            section_time=time["total"]
-                        )
-                        self.__section_time_repository.save_section_time(created_sections_times)
+                section_code_section_mapper[section.code] = section
+
+            section_times = self.__section_times_importer.section_time_importer(event=event)
+            for section_time in section_times:
+                dorsal = section_time["dorsal"]
+                inscription = dorsal_inscription_mapper[dorsal]
+                for section_code, time in section_time["code"].items():
+                    section = section_code_section_mapper[section_code]
+                    created_sections_times = self.__section_times_creator.section_time_creator(
+                        section_id=section.id,
+                        inscription=inscription.id,
+                        section_time=time
+                    )
+                    self.__section_time_repository.save_section_time(created_sections_times)
