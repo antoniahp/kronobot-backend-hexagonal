@@ -1,4 +1,3 @@
-from abc import abstractmethod, ABC
 from typing import List, Optional
 
 from django.db.models import Q

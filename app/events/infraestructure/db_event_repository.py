@@ -23,6 +23,5 @@ class DbEventRepository(EventRepository):
         return events
 
 
-
     def save_event(self, event: Event) -> None:
         event.save()

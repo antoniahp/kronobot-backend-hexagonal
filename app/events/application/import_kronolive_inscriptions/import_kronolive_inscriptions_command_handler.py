@@ -58,5 +58,3 @@ class ImportKronoliveInscriptionsCommandHandler(CommandHandler):
                     )
 
                     self.__inscription_repository.save_inscription(created_inscriptions)
-
-

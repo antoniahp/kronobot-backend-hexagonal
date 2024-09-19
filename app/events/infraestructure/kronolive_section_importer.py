@@ -14,8 +14,6 @@ class KronoliveSectionImporter(SectionImporter):
         soup = BeautifulSoup(response.text)
         table = soup.find("table")
 
-
-        #headers = [header.text for header in table.find_all("th")]
         verbose_section_names = {
             header.text: header.find("a").get("title") if header.find("a") else None
             for header in table.find_all("th")
