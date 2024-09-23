@@ -137,3 +137,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
+
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+if TELEGRAM_BOT_TOKEN is None:
+    raise ValueError("You must define a TELEGRAM_BOT_TOKEN in the .env file")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+if TELEGRAM_CHAT_ID is None:
+    raise ValueError("You must define a TELEGRAM_CHAT_ID in the .env file")

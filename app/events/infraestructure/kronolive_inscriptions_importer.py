@@ -42,16 +42,24 @@ class KronoliveInscriptionsImporter(InscriptionsImporter):
                 continue
 
             dorsal = dorsal_soup.text.strip()
-            pilot = pilot_soup.text.strip()
-            copilot =copilot_soup.text.strip()
+            pilots_separator = "!"
+            pilots_text = pilot_soup.get_text(separator=pilots_separator, strip=True)
+            if pilots_separator in pilots_text:
+                pilots_names = pilots_text.split(pilots_separator)
+                pilot_name = pilots_names[0]
+                copilot_name = pilots_names[1]
+            else:
+                pilot_name = pilots_text
+                copilot_name = None
+            #copilot = copilot_soup.text.strip()
             car = car_soup.text.strip()
             category = category_soup.text.strip()
 
             inscriptions_list.append({
                 "event_external_id": event_external_id,
                 "dorsal": dorsal,
-                "pilot": pilot,
-                "copilot": copilot,
+                "pilot": pilot_name,
+                "copilot": copilot_name,
                 "category": category,
                 "car": car
             })
