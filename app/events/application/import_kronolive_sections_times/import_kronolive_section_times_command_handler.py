@@ -9,7 +9,6 @@ from events.domain.section.section_repository import SectionRepository
 from events.domain.section_time.section_time_creator import SectionTimeCreator
 from events.domain.section_time.section_time_importer import SectionTimeImporter
 from events.domain.section_time.section_time_repository import SectionTimeRepository
-from events.domain.competitor import competitor
 
 
 class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
@@ -58,4 +57,5 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
                                            pilot_name=inscription.pilot.name,
                                            copilot_name=inscription.copilot.name if inscription.copilot else None,
                                            car=inscription.car,
-                                           image_url=inscription.pilot.image.url if inscription.pilot.image else None)
+                                           image_url=inscription.car_image()
+                                           )

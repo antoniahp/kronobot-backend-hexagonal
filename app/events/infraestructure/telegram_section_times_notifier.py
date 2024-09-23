@@ -1,7 +1,7 @@
 import time
 from typing import Optional
 
-import telegram.error
+from telegram.error import RetryAfter
 
 from events.domain.notifier import Notifier
 import telegram as _telegram
@@ -13,22 +13,52 @@ class TelegramSectionTimesNotifier(Notifier):
 
     def notify(self, pilot_name: str, copilot_name: Optional[str], car: str, section_name: str, section_time: str, image_url: Optional[str]) -> None:
 
-        # Formateo de texto
-        caption = (f"*{pilot_name}* y *{copilot_name}* llegan {car}{section_name}{section_time}"
-                   if copilot_name else f"*{pilot_name}* llega {car}")
+        competitors_string = (
+            f"*{pilot_name}* y *{copilot_name}* llegan" if copilot_name else f"*{pilot_name}* llega"
+        )
+        short_description = f"{competitors_string} a meta con un tiempo de *{section_time}* a meta en *{section_name}*\n"
 
         pilot_text = f"🧍 *Piloto:*  {pilot_name}"
-        copilot_text = f"🧍 *Copiloto:*  {copilot_name}" if copilot_name else ""
+        copilot_text = f"🧍 *Copiloto:*  {copilot_name}"
         car_text = f"🚗 *Coche:*  {car}"
         section_name_text = f"🚥 *Tramo:*  {section_name}"
         section_time_text = f"🏁 *Tiempo:*  {section_time}"
 
-        message_text = f"{pilot_text}\n{copilot_text}\n{car_text}\n{section_name_text}\n{section_time_text}"
         try:
-            self.__bot.send_message(
-                chat_id=self.__chat_id,
-                text=message_text,
-                parse_mode="markdown",
-            )
-        except telegram.error.TimedOut:
-            time.sleep(1)
+            if copilot_name:
+                text = "\n".join(
+                    [
+                        short_description,
+                        pilot_text,
+                        copilot_text,
+                        car_text,
+                        section_name_text,
+                        section_time_text,
+                    ]
+                )
+            else:
+                text = "\n".join(
+                    [
+                        short_description,
+                        pilot_text,
+                        car_text,
+                        section_name_text,
+                        section_time_text,
+                    ]
+                )
+
+            if image_url:
+                self.__bot.send_photo(
+                    chat_id=self.__chat_id,
+                    photo=open(image_url, "rb"),
+                    caption=text,
+                    parse_mode="markdown",
+                )
+            else:
+                self.__bot.send_message(chat_id=self.__chat_id, text=text, parse_mode="markdown")
+
+
+            time.sleep(2)
+
+        except RetryAfter as e:
+            time.sleep(e.retry_after)
