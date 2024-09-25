@@ -131,12 +131,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 if TELEGRAM_BOT_TOKEN is None:
@@ -144,3 +139,15 @@ if TELEGRAM_BOT_TOKEN is None:
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 if TELEGRAM_CHAT_ID is None:
     raise ValueError("You must define a TELEGRAM_CHAT_ID in the .env file")
+
+
+WHATSAPP_BEARER_TOKEN = os.environ.get("WHATSAPP_BEARER_TOKEN")
+API_WHATSAPP_URL =os.environ.get("API_WHATSAPP_URL")
+ORIGEN_WHATSAPP_NUMBER = os.environ.get("ORIGEN_WHATSAPP_NUMBER")
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
