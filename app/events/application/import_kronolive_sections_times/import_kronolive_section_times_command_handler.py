@@ -1,3 +1,5 @@
+from typing import List
+
 from cqrs.commands.command_handler import CommandHandler
 from events.application.import_kronolive_sections.import_kronolive_section_command import  ImportKronoliveSectionCommand
 from events.domain.event.event_repository import EventRepository
@@ -13,7 +15,7 @@ from events.domain.section_time.section_time_repository import SectionTimeReposi
 
 class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
     def __init__(self, section_times_creator: SectionTimeCreator,section_time_repository: SectionTimeRepository, section_repository: SectionRepository, section_time_importer: SectionTimeImporter,
-                 event_repository: EventRepository, inscription_repository:InscriptionRepository, section_importer: SectionImporter, notifier:Notifier):
+                 event_repository: EventRepository, inscription_repository:InscriptionRepository, section_importer: SectionImporter, notifiers:List[Notifier]):
         self.__section_times_creator = section_times_creator
         self.__section_repository = section_repository
         self.__section_time_repository = section_time_repository
@@ -21,12 +23,12 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
         self.__event_repository = event_repository
         self.__inscription_repository = inscription_repository
         self.__section_importer = section_importer
-        self.__notifier = notifier
+        self.__notifiers = notifiers
 
     def handle(self, command: ImportKronoliveSectionCommand):
         events = self.__event_repository.filter_event()
         for event in events:
-            sections = self.__section_repository.filter_section()
+            sections = self.__section_repository.filter_section(event_id=event.id)
             inscriptions = self.__inscription_repository.filter_inscriptions(event_id=event.id)
             if len(inscriptions) == 0:
                 continue
@@ -52,10 +54,11 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
                         section_time=time
                     )
                     self.__section_time_repository.save_section_time(created_sections_times)
-                    self.__notifier.notify(section_name=section.name,
-                                           section_time=time,
-                                           pilot_name=inscription.pilot.name,
-                                           copilot_name=inscription.copilot.name if inscription.copilot else None,
-                                           car=inscription.car,
-                                           image_url=inscription.car_image()
-                                           )
+                    # for notifier in self.__notifiers:
+                    #     notifier.notify(section_name=section.name,
+                    #                            section_time=time,
+                    #                            pilot_name=inscription.pilot.name,
+                    #                            copilot_name=inscription.copilot.name if inscription.copilot else None,
+                    #                            car=inscription.car,
+                    #                            image_url=inscription.car_image()
+                    #                            )

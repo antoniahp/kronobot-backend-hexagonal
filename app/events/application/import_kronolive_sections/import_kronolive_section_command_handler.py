@@ -21,7 +21,7 @@ class ImportKronoliveSectionCommandHandler(CommandHandler):
             sections = self.__section_importer.section_importer(event=event)
             for section in sections:
                 for code, name in section.items():
-                    section = self.__section_repository.filter_section(name=name)
+                    section = self.__section_repository.filter_section(name=name, event_id=event.id)
                     if not section:
                         created_sections = self.__section_creator.create_section(
                             name = name,

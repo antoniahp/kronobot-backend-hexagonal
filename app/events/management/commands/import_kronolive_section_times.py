@@ -11,6 +11,7 @@ from events.infraestructure.db_section_time_repository import DbSectionTimeRepos
 from events.infraestructure.kronolive_section_importer import KronoliveSectionImporter
 from events.infraestructure.kronolive_section_time_importer import KronoliveSectionTimeImporter
 from events.infraestructure.telegram_section_times_notifier import TelegramSectionTimesNotifier
+from events.infraestructure.whatsapp_section_times_notifier import WhatsappSectionTimesNotifier
 
 
 class Command(BaseCommand):
@@ -26,6 +27,8 @@ class Command(BaseCommand):
         self.__db_inscription_repository = DbInscriptionRepository()
         self.__kronolive_section_importer = KronoliveSectionImporter()
         self.__telegram_section_times_notifier = TelegramSectionTimesNotifier(bot_token=settings.TELEGRAM_BOT_TOKEN, chat_id=settings.TELEGRAM_CHAT_ID)
+        self.__whatsapp_section_times_notifier = WhatsappSectionTimesNotifier(whatsapp_url=settings.API_WHATSAPP_URL, whatsapp_token=settings.WHATSAPP_BEARER_TOKEN, origen_whatsapp_number=settings.ORIGEN_WHATSAPP_NUMBER)
+
         self.__import_kronolive_section_time_command_handler = ImportKronoliveSectionTimesCommandHandler(
             section_times_creator=self.__section_times_creator,
             section_repository=self.__db_section_repository,
@@ -34,7 +37,7 @@ class Command(BaseCommand):
             event_repository=self.__db_event_repository,
             inscription_repository=self.__db_inscription_repository,
             section_importer=self.__kronolive_section_importer,
-            notifier=self.__telegram_section_times_notifier
+            notifiers=[self.__telegram_section_times_notifier, self.__whatsapp_section_times_notifier]
         )
 
     def handle(self, *args, **options):

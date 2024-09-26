@@ -42,6 +42,7 @@ class SectionAdmin(admin.ModelAdmin):
         "name",
         "code"
     ]
+    ordering = ['event']
 
 class SectionTimeAdmin(admin.ModelAdmin):
     list_display = [

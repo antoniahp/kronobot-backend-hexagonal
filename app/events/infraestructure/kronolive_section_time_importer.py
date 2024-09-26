@@ -9,8 +9,9 @@ from events.domain.section_time.section_time_importer import SectionTimeImporter
 
 class KronoliveSectionTimeImporter(SectionTimeImporter):
     def section_time_importer(self, event: Event) -> List[Dict]:
-        url = "https://www.kronolive.es/es/Tiempos/1231/a"
-        response = requests.get(url)
+        #url = "https://www.kronolive.es/es/Tiempos/1226/rallysprint-sant-salvador2024"
+        #response = requests.get(url)
+        response = requests.get(event.provider_data["times_url"])
         soup = BeautifulSoup(response.text, 'html.parser')
 
         table = soup.find("table")
