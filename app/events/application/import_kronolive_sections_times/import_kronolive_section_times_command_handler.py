@@ -28,7 +28,7 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
     def handle(self, command: ImportKronoliveSectionCommand):
         events = self.__event_repository.filter_event()
         for event in events:
-            sections = self.__section_repository.filter_section()
+            sections = self.__section_repository.filter_section(event_id=event.id)
             inscriptions = self.__inscription_repository.filter_inscriptions(event_id=event.id)
             if len(inscriptions) == 0:
                 continue
@@ -54,11 +54,11 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
                         section_time=time
                     )
                     self.__section_time_repository.save_section_time(created_sections_times)
-                    for notifier in self.__notifiers:
-                        notifier.notify(section_name=section.name,
-                                               section_time=time,
-                                               pilot_name=inscription.pilot.name,
-                                               copilot_name=inscription.copilot.name if inscription.copilot else None,
-                                               car=inscription.car,
-                                               image_url=inscription.car_image()
-                                               )
+                    # for notifier in self.__notifiers:
+                    #     notifier.notify(section_name=section.name,
+                    #                            section_time=time,
+                    #                            pilot_name=inscription.pilot.name,
+                    #                            copilot_name=inscription.copilot.name if inscription.copilot else None,
+                    #                            car=inscription.car,
+                    #                            image_url=inscription.car_image()
+                    #                            )
