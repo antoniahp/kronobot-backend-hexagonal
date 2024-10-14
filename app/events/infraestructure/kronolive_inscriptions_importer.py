@@ -10,7 +10,7 @@ from events.domain.inscription.inscriptions_importer import InscriptionsImporter
 class KronoliveInscriptionsImporter(InscriptionsImporter):
     def import_inscriptions(self, event:Event) -> List[Dict]:
         event_external_id = event.event_external_id
-        #url = "https://www.kronolive.es/es/ListaDeInscritos/1231/a"
+        #url = "https://www.kronolive.es/es/ListaDeInscritos/1215/a"
         #response = requests.get(url)
         response = requests.get(event.provider_data["inscribed_url"])
         inscriptions_list = []
@@ -38,7 +38,7 @@ class KronoliveInscriptionsImporter(InscriptionsImporter):
             car_soup = result.get("Vehículo")
             category_soup = result.get("Gr.")
 
-            if not all([dorsal_soup, pilot_soup, copilot_soup, car_soup, category_soup]):
+            if not all([dorsal_soup, pilot_soup, car_soup, category_soup]):
                 continue
 
             dorsal = dorsal_soup.text.strip()

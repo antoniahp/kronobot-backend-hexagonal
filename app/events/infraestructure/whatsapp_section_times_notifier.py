@@ -8,7 +8,7 @@ class WhatsappSectionTimesNotifier(Notifier):
         self.__whatsapp_token = whatsapp_token
         self.__origen_whatsapp_number = origen_whatsapp_number
 
-    def notify(self, pilot_name: str, copilot_name: Optional[str], car: str, section_name: str, section_time: str, image_url: Optional[str]) -> None:
+    def notify(self, pilot_name: str, copilot_name: Optional[str], car: str, section_name: str, section_time: str, image_file: Optional[str]) -> None:
 
         competitors_string = (
             f"*{pilot_name}* y *{copilot_name}* llegan" if copilot_name else f"*{pilot_name}* llega"
