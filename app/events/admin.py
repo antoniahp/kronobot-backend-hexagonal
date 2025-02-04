@@ -18,6 +18,8 @@ class CompetitorAdmin(admin.ModelAdmin):
     list_display = [
         "name",
     ]
+    list_filter = ('event',)
+    raw_id_fields = ('event',)
 
 class InscriptionAdmin(admin.ModelAdmin):
     list_display = [
@@ -25,6 +27,8 @@ class InscriptionAdmin(admin.ModelAdmin):
         "get_event_name",
         "car",
     ]
+    list_filter = ('event',)
+    raw_id_fields = ('event',)
 
     def get_pilot_name(self, obj):
         return obj.pilot.name
@@ -43,6 +47,8 @@ class SectionAdmin(admin.ModelAdmin):
         "code"
     ]
     ordering = ['event']
+    list_filter = ('event',)
+    raw_id_fields = ('event',)
 
 class SectionTimeAdmin(admin.ModelAdmin):
     list_display = [
@@ -52,6 +58,8 @@ class SectionTimeAdmin(admin.ModelAdmin):
         "section_time"
     ]
     ordering = ['section']
+    list_filter = ('section__name',)
+    raw_id_fields = ('section',)
 
     def get_section_name(self, obj):
         return obj.section.name
