@@ -54,7 +54,22 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
                         section_time=time
                     )
                     self.__section_time_repository.save_section_time(created_sections_times)
-                    # for notifier in self.__notifiers:
+
+                    for notifier in self.__notifiers:
+                        notifier.notify(section_name=section.name,
+                                        section_time=time,
+                                        pilot_name=inscription.pilot.name,
+                                        copilot_name=inscription.copilot.name if inscription.copilot else None,
+                                        car=inscription.car,
+                                        image_file=inscription.car_image())
+
+#--------------------------------------
+                    # si el notifier es whatsapp enviar solo los 10 primeros de cada TC (necesitamos filtrar por tc)
+                    #por seccion en section_code_section_mapper (TC1, TC2, TC3...)
+                    #haz la notificacion de los 10 primeros section_times
+
+                    # for notifier in self.__notifiers range(0,len(9):
+                    # if notifier == WhatsappSectionTimesNotifier (o creo notificadores diferentes o no se como distinguir whatsapp de tenlegram)
                     #     notifier.notify(section_name=section.name,
                     #                            section_time=time,
                     #                            pilot_name=inscription.pilot.name,

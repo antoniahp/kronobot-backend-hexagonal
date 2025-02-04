@@ -27,22 +27,23 @@ class ImportKronoliveInscriptionsCommandHandler(CommandHandler):
                     self.__competitor_repository.filter_competitor(name=competitor["pilot"])
                     pilot = self.__competitor_repository.filter_competitor(name=competitor["pilot"])
                     if pilot is None:
-                        created_pilot = self.__competitor_creator.create_competitor(
+                        pilot = self.__competitor_creator.create_competitor(
                             event_id=event.id,
                             name=competitor["pilot"],
                             image=None
                         )
-                        self.__competitor_repository.save_competitor(created_pilot)
+                        self.__competitor_repository.save_competitor(pilot)
 
 
                     copilot = self.__competitor_repository.filter_competitor(name=competitor["copilot"])
-                    if copilot is None:
-                        created_copilot = self.__competitor_creator.create_competitor(
-                            event_id=event.id,
-                            name=competitor["copilot"],
-                            image=None
-                        )
-                        self.__competitor_repository.save_competitor(created_copilot)
+                    if competitor["copilot"] is not None:
+                        if copilot is None:
+                            copilot = self.__competitor_creator.create_competitor(
+                                event_id=event.id,
+                                name=competitor["copilot"],
+                                image=None
+                            )
+                            self.__competitor_repository.save_competitor(copilot)
 
                 for inscription in inscriptions:
                     event = self.__event_repository.filter_event(event_external_id=inscription["event_external_id"]).first()
@@ -54,7 +55,7 @@ class ImportKronoliveInscriptionsCommandHandler(CommandHandler):
                         category=inscription["category"],
                         dorsal=inscription["dorsal"],
                         pilot_id=pilot.id,
-                        copilot_id=copilot.id,
+                        copilot_id=copilot.id if copilot else None
                     )
 
                     self.__inscription_repository.save_inscription(created_inscriptions)

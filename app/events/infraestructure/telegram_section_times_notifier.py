@@ -11,7 +11,7 @@ class TelegramSectionTimesNotifier(Notifier):
         self.__bot = _telegram.Bot(token=bot_token)
         self.__chat_id = chat_id
 
-    def notify(self, pilot_name: str, copilot_name: Optional[str], car: str, section_name: str, section_time: str, image_url: Optional[str]) -> None:
+    def notify(self, pilot_name: str, copilot_name: Optional[str], car: str, section_name: str, section_time: str, image_file: Optional[str]) -> None:
 
         competitors_string = (
             f"*{pilot_name}* y *{copilot_name}* llegan" if copilot_name else f"*{pilot_name}* llega"
@@ -47,10 +47,10 @@ class TelegramSectionTimesNotifier(Notifier):
                     ]
                 )
 
-            if image_url:
+            if image_file:
                 self.__bot.send_photo(
                     chat_id=self.__chat_id,
-                    photo=open(image_url, "rb"),
+                    photo=open(image_file, "rb"),
                     caption=text,
                     parse_mode="markdown",
                 )

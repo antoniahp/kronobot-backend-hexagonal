@@ -51,6 +51,7 @@ class SectionTimeAdmin(admin.ModelAdmin):
         "get_pilot_name",
         "section_time"
     ]
+    ordering = ['section']
 
     def get_section_name(self, obj):
         return obj.section.name

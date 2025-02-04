@@ -8,10 +8,10 @@ from events.domain.section.section_importer import SectionImporter
 
 class KronoliveSectionImporter(SectionImporter):
     def section_importer(self, event: Event) -> List[Dict]:
-        #url = "https://www.kronolive.es/es/Tiempos/1231/rallysprint-aficio-de-calvia2024"
+        #url = "https://www.kronolive.es/es/Tiempos/1215/rallysprint-aficio-de-calvia2024"
         #response = requests.get(url)
         response = requests.get(event.provider_data["times_url"])
-        soup = BeautifulSoup(response.text)
+        soup = BeautifulSoup(response.text, features="html.parser")
         table = soup.find("table")
 
         verbose_section_names = {

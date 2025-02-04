@@ -10,9 +10,9 @@ from bs4 import BeautifulSoup
 
 class KronoliveEventImporter(EventImporter):
     def import_events(self) -> List[Dict]:
-        url = "https://www.kronolive.es/es/2024"
+        url = "https://www.kronolive.es/es"
         response = requests.get(url)
-        soup = BeautifulSoup(response.text)
+        soup = BeautifulSoup(response.text, features="html.parser")
         cards = soup.find_all("div", class_="col-12 col-sm-6 col-md-4 col-lg-3")
         event_list = []
         for card in cards:
