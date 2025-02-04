@@ -12,7 +12,7 @@ class KronoliveSectionTimeImporter(SectionTimeImporter):
         #url = "https://www.kronolive.es/es/Tiempos/1215/rallysprint-sant-salvador2024"
         #response = requests.get(url)
         response = requests.get(event.provider_data["times_url"])
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.text, features="html.parser")
 
         table = soup.find("table")
         if not table:

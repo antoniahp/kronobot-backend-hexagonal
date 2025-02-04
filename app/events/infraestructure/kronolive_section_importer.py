@@ -11,7 +11,7 @@ class KronoliveSectionImporter(SectionImporter):
         #url = "https://www.kronolive.es/es/Tiempos/1215/rallysprint-aficio-de-calvia2024"
         #response = requests.get(url)
         response = requests.get(event.provider_data["times_url"])
-        soup = BeautifulSoup(response.text)
+        soup = BeautifulSoup(response.text, features="html.parser")
         table = soup.find("table")
 
         verbose_section_names = {

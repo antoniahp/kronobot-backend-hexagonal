@@ -14,7 +14,7 @@ class KronoliveInscriptionsImporter(InscriptionsImporter):
         #response = requests.get(url)
         response = requests.get(event.provider_data["inscribed_url"])
         inscriptions_list = []
-        soup = BeautifulSoup(response.text)
+        soup = BeautifulSoup(response.text, features="html.parser")
         a = soup.find("a", id="ctl00_cphContenido_TopPrueba_hypClasificacion")
         if a and 'href' in a.attrs:
             href = a['href']
