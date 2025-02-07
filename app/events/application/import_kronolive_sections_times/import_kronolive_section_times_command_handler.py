@@ -12,7 +12,6 @@ from events.domain.section_time.section_time_creator import SectionTimeCreator
 from events.domain.section_time.section_time_importer import SectionTimeImporter
 from events.domain.section_time.section_time_repository import SectionTimeRepository
 
-
 class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
     def __init__(self, section_times_creator: SectionTimeCreator,section_time_repository: SectionTimeRepository, section_repository: SectionRepository, section_time_importer: SectionTimeImporter,
                  event_repository: EventRepository, inscription_repository:InscriptionRepository, section_importer: SectionImporter, notifiers:List[Notifier]):
@@ -37,7 +36,6 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
             for inscription in inscriptions:
                 dorsal_inscription_mapper[inscription.dorsal] = inscription
 
-
             section_code_section_mapper = {}
             for section in sections:
                 section_code_section_mapper[section.code] = section
@@ -47,7 +45,10 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
                 dorsal = section_time["dorsal"]
                 inscription = dorsal_inscription_mapper[dorsal]
                 for section_code, time in section_time["code"].items():
-                    section = section_code_section_mapper[section_code]
+                    if section_code in section_code_section_mapper:
+                        section = section_code_section_mapper[section_code]
+                    else:
+                        continue
                     created_sections_times = self.__section_times_creator.section_time_creator(
                         section_id=section.id,
                         inscription=inscription.id,
@@ -62,18 +63,3 @@ class ImportKronoliveSectionTimesCommandHandler(CommandHandler):
                                         copilot_name=inscription.copilot.name if inscription.copilot else None,
                                         car=inscription.car,
                                         image_file=inscription.car_image())
-
-#--------------------------------------
-                    # si el notifier es whatsapp enviar solo los 10 primeros de cada TC (necesitamos filtrar por tc)
-                    #por seccion en section_code_section_mapper (TC1, TC2, TC3...)
-                    #haz la notificacion de los 10 primeros section_times
-
-                    # for notifier in self.__notifiers range(0,len(9):
-                    # if notifier == WhatsappSectionTimesNotifier (o creo notificadores diferentes o no se como distinguir whatsapp de tenlegram)
-                    #     notifier.notify(section_name=section.name,
-                    #                            section_time=time,
-                    #                            pilot_name=inscription.pilot.name,
-                    #                            copilot_name=inscription.copilot.name if inscription.copilot else None,
-                    #                            car=inscription.car,
-                    #                            image_url=inscription.car_image()
-                    #                            )
